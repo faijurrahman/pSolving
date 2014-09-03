@@ -1,0 +1,15 @@
+DP = carefull brute force
+DP = memorization + recursion + guessing
+DP = shortest path in a DAG (Directed Acyclic Graph)
+
+time of DP = time of subproblem * number of subprolem
+
+
+Five Easy Steps for DP from
+http://www.youtube.com/watch?v=ENyox7kNKeY
+
+1. Define Subproblems
+2. Guess part of the solution
+3. Relate Subproblem Solutions
+4. Recursion & Memorization (Decide bottom-up or top-down)
+5. Solve Original Problem

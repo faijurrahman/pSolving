@@ -1,0 +1,34 @@
+//gcd 
+while(n) (m%=n)^=n^=m^=n;
+
+//ncr 
+#define CN (50+1)
+int ncr[CN][CN];
+ZERO(ncr); loop(i,CN) ncr[i][0]=1;
+loop(i,CN-1) loop(j,i+1) ncr[i+1][j+1] = (ncr[i][j]+ncr[i][j+1])%MOD;
+
+//Catalan Number
+return ncr[2*n][n]/(n+1);
+
+//ncr alternative
+MIN(r,n-r);
+loop(i,r){ ncr*=(n-i); ncr/=(i+1);}
+
+//Prime Factor
+for(int i=2; i*i<=N; i++,fac=0) if(N%i==0)
+{
+   while(N%i==0) N/=i, fac++; m[i]=fac;
+}
+if(N>1) m[N]=1;
+
+
+//Totient
+for(int i=2; i*i<=N; i++,fac=1) if(N%i==0)
+{
+   while(N%i==0) N/=i, fac++;
+   res*=pow(i,fac-1)*(i-1);
+}
+if(N>1) res*=N-1;
+
+//PopCount
+loop(i,1<<10) pop[i]=(i&1)+pop[i/2];

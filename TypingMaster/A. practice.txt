@@ -1,0 +1,3 @@
+//Time
+clock_t time=clock();
+cout <<"Time: "<<clock()-time <<endl;

@@ -1,0 +1,42 @@
+//basic structure 
+struct edge
+{
+   int u,v,w;
+   edge(int u1, int v1, int w1)
+   {
+	u=u1; v=v1; w=w1;
+   }
+   bool operator < (edge E) const
+   {
+	return w<E.w;
+   }
+};
+ 
+struct graph
+{
+   vector<int> node;
+   vector<edge> e;
+   vector<edge> adj(int u)
+   {
+	vector<edge> ans;
+	for(edge edg:e) if(edg.u==u || edg.v==u) ans.push_back(edg);
+	return ans;
+   }
+}g;
+
+//bellmanFord 
+loop(i,X) dp[i]=INT_MAX; dp[0]=0;
+loop(i,X) loop(j,Y) MIN(dp[g.e[j].v], dp[g.e[j].u]+g.e[j].w);
+loop(j,Y) if(dp[g.e[j].v] > dp[g.e[j].u]+g.e[j].w) negCycle=true;
+
+//floydWarshell  
+loop(i,X) loop(j,X) loop(k,X) MIN(G[i][j], G[i][k]+G[k][j]);
+
+//isSafe 
+if(x>=0 && x<X && y>=0 && y<Y && !seen[x][y]) return true;
+
+//Knight Move 
+int xMove[8] = {1,1,-1,-1,2,2,-2,-2};
+int yMove[8] = {2,-2,2,-2,1,-1,1,-1};
+vector<pair<int,int>> Move;
+loop(i,8) Move.pb(mp(xMove[i],yMove[i]));

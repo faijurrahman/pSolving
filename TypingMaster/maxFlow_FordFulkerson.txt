@@ -1,0 +1,67 @@
+class maxFlow
+{
+private:	
+	int X, src, sink;
+	vector<int> path;
+	vector<vector<int>> Graph;
+
+	bool bfs(void)
+	{
+		vector<bool> seen;
+		seen.resize(X,false);
+		
+		queue<int> q;
+		q.push(src);
+		seen[src] = true;
+		while (!q.empty())
+		{
+			int u = q.front(); q.pop();
+			loop(v,X) if(!seen[v] && Graph[u][v]>0)
+			{
+				q.push(v);
+				seen[v] = true;
+				path[v] = u;
+				if(seen[sink]) return true;
+			}
+		}
+		return false;
+	}
+
+public:
+	int fordFulkerson(vector<vector<int>> graph, int s, int t)
+	{
+		Graph = graph;
+		X = Graph.size();
+		src=s, sink=t;
+		path.resize(X,0);
+
+		int u, v, max_flow = 0; 
+		while (bfs() == true)
+		{
+			int path_flow = INT_MAX;
+			for (v=sink; v!=src; v=path[v])
+			{
+				u = path[v];
+				path_flow = min(path_flow, Graph[u][v]);
+			}
+
+			for (v=sink; v!=src; v=path[v])
+			{
+				u = path[v];
+				Graph[u][v] -= path_flow;
+				Graph[v][u] += path_flow;
+			}
+
+			max_flow += path_flow;
+		}
+		return max_flow;
+	}
+};
+
+int main()
+{
+	maxFlow objMaxFlow;
+	int ans =  objMaxFlow.fordFulkerson(Graph, 0, 5);
+    cout << "The maxFlow is " << ans << endl;
+    return 0;
+}
