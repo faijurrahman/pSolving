@@ -13,14 +13,14 @@ using namespace std;
 class maxBPM
 {
 private:
-	int X;
+	int X,Y;
 	vector<bool> seen;
 	vector<int> matchRecord;
-	vector<vector<bool>> graph;
+	vector<vector<int>> graph;
 
 	bool bpmRecur(int u)
 	{
-		loop(v,X)
+		loop(v,Y)
 		{
 			if (graph[u][v] && !seen[v])
 			{
@@ -36,17 +36,19 @@ private:
 	}
 
 public:
-	int findMaxBPM(vector<vector<bool>>& Graph)
+	int findMaxBPM(vector<vector<int>>& Graph)
 	{
 		graph = Graph;
 		X = graph.size();
-		matchRecord.resize(X,-1);
+		Y = graph[0].size();
+
+		matchRecord.resize(Y,-1);
 
 		int ans = 0; 
 		loop(u,X)
 		{
 			seen.clear();
-			seen.resize(X,false);
+			seen.resize(Y,false);
 			if(bpmRecur(u)) ans++;
 		}
 		return ans;
