@@ -15,7 +15,7 @@ class maxBPM
 private:
 	int X;
 	vector<bool> seen;
-	vector<int> matchRec;
+	vector<int> matchRecord;
 	vector<vector<bool>> graph;
 
 	bool bpmRecur(int u)
@@ -25,9 +25,9 @@ private:
 			if (graph[u][v] && !seen[v])
 			{
 				seen[v] = true;
-				if( matchRec[v]<0 || bpmRecur(matchRec[v]) )
+				if( matchRecord[v]<0 || bpmRecur(matchRecord[v]) )
 				{
-					matchRec[v] = u;
+					matchRecord[v] = u;
 					return true;
 				}
 			}
@@ -40,7 +40,7 @@ public:
 	{
 		graph = Graph;
 		X = graph.size();
-		matchRec.resize(X,-1);
+		matchRecord.resize(X,-1);
 
 		int ans = 0; 
 		loop(u,X)
