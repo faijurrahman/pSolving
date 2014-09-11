@@ -53,13 +53,13 @@ class binSearch
 		while(high>low) 
 		{
 			int mid = low+(high-low)/2;
-			if(isConditionSatisfy(mid)<=target) high=mid;
+			if(calVal(mid)<=target) high=mid;
 			else low=mid+1;
 		}
 		return low;
 	}
 
-	int isConditionSatisfy(int x)
+	int calVal(int x)
 	{
 		int required=1, load=0;
 		loop(i,X)
