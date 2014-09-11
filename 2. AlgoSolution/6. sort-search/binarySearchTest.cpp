@@ -47,29 +47,36 @@ class binSearch
 		return -1;
 	}
 
-	int bSearchAdv(int high, int low)
+	long long bSearchAdv(long long high, long long low)
 	{
 		X=searchSpace.size();
 		while(high>low) 
 		{
-			int mid = low+(high-low)/2;
-			if(calVal(mid)<=target) high=mid;
+			long long mid = (high+low+1)/2;
+			if(isOk(mid)) high=mid;
 			else low=mid+1;
 		}
 		return low;
 	}
 
-	int calVal(int x)
+	bool isOk(long long x)
 	{
-		int required=1, load=0;
+		long long count=0;
 		loop(i,X)
 		{
-			if(load+searchSpace[i]<=x) load+=searchSpace[i];
-			else{ ++required; load=searchSpace[i];}             
+			if(searchSpace[i]<=x)
+			{
+				count++;  
+			}   
+			else
+			{
+				count+=2;
+			}       
 		}
-		return required;
+		return count<=target;
 	}
 };
+
 
 int main(void)
 {
