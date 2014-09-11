@@ -28,11 +28,11 @@ class binSearch
 	long long bSearchAdv(long long high, long long low)
 	{
 		X=searchSpace.size();
-		while(high>low) 
+		while(high>low+1) 
 		{
-			long long mid = (high+low+1)/2;
+			long long mid = low+(high-low)/2;
 			if(isOk(mid)) high=mid;
-			else low=mid+1;
+			else low=mid;
 		}
 		return low;
 	}
