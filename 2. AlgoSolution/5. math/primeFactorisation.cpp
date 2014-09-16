@@ -23,9 +23,15 @@ class testClass
 		cout<<"Prime Factor of "<<n<<" : ";
 		for(pair<int,int>t:m) cout<<"["<<t.first<<"]="<<t.second<<" ";cout<<endl;
 	}
-	
 
-
+	map<int,int> primeFactorList(int n)
+	{
+		map<int,int> pl;
+		for(int i=2; i*i<=n; i++)
+			while(n%i==0){pl[i]++; n/=i;}
+		if(n>1) pl[n]++;
+		return pl;
+	}
 };
 
 int main()
