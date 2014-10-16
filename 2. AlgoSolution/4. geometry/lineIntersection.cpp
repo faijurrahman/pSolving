@@ -2,14 +2,14 @@
 #include <iostream>
 using namespace std;
 
-struct Point
+struct point
 {
     int x,y;
-	Point(int a, int b){x=a;y=b;}
+	point(int a, int b){x=a;y=b;}
 	void setXY(int a, int b){x=a;y=b;}
 };
  
-bool onSegment(Point p, Point q, Point r)
+bool onSegment(point p, point q, point r)
 {
     if (q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&
         q.y <= max(p.y, r.y) && q.y >= min(p.y, r.y))
@@ -18,7 +18,7 @@ bool onSegment(Point p, Point q, Point r)
     return false;
 }
  
-int orientation(Point p, Point q, Point r)
+int orientation(point p, point q, point r)
 {
     int val = (q.y - p.y) * (r.x - q.x) -
               (q.x - p.x) * (r.y - q.y);
@@ -28,7 +28,7 @@ int orientation(Point p, Point q, Point r)
     return (val > 0)? 1: -1; // clock or counterclock wise
 }
  
-bool doIntersect(Point A, Point B, Point C, Point D)
+bool doIntersect(point A, point B, point C, point D)
 {
     // Find the four orientations needed for general and
     // special cases
@@ -56,8 +56,8 @@ bool doIntersect(Point A, Point B, Point C, Point D)
 // Driver program to test above functions
 int main()
 {
-    struct Point p1(1, 1), q1(10, 1);
-	struct Point p2(1, 2), q2(10, 2);
+    struct point p1(1, 1), q1(10, 1);
+	struct point p2(1, 2), q2(10, 2);
     doIntersect(p1, q1, p2, q2)? cout << "Yes\n": cout << "No\n";
  
     p1.setXY(10, 0), q1.setXY(0, 10);

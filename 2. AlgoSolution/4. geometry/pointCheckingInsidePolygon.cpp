@@ -8,7 +8,7 @@ using namespace std;
 // Define Infinite (Using INT_MAX caused overflow problems)
 #define INF 10000
  
-struct Point
+struct point
 {
     int x;
     int y;
@@ -22,7 +22,7 @@ public:
  
 // Given three colinear points p, q, r, the function checks if
 // point q lies on line segment 'pr'
-bool onSegment(Point p, Point q, Point r)
+bool onSegment(point p, point q, point r)
 {
     if (q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&
             q.y <= max(p.y, r.y) && q.y >= min(p.y, r.y))
@@ -35,7 +35,7 @@ bool onSegment(Point p, Point q, Point r)
 // 0 --> p, q and r are colinear
 // 1 --> Clockwise
 // 2 --> Counterclockwise
-int orientation(Point p, Point q, Point r)
+int orientation(point p, point q, point r)
 {
     int val = (q.y - p.y) * (r.x - q.x) -
               (q.x - p.x) * (r.y - q.y);
@@ -46,7 +46,7 @@ int orientation(Point p, Point q, Point r)
  
 // The function that returns true if line segment 'p1q1'
 // and 'p2q2' intersect.
-bool doIntersect(Point p1, Point q1, Point p2, Point q2)
+bool doIntersect(point p1, point q1, point p2, point q2)
 {
     // Find the four orientations needed for general and
     // special cases
@@ -76,13 +76,13 @@ bool doIntersect(Point p1, Point q1, Point p2, Point q2)
 }
  
 // Returns true if the point p lies inside the polygon[] with n vertices
-bool isInside(Point polygon[], int n, Point p)
+bool isInside(point polygon[], int n, point p)
 {
     // There must be at least 3 vertices in polygon[]
     if (n < 3)  return false;
  
     // Create a point for line segment from p to infinite
-    Point extreme = {INF, p.y};
+    point extreme = {INF, p.y};
  
     // Count intersections of the above line with sides of polygon
     int count = 0, i = 0;
@@ -112,15 +112,15 @@ bool isInside(Point polygon[], int n, Point p)
 // Driver program to test above functions
 int main()
 {
-    Point polygon1[] = {{0, 0}, {10, 0}, {10, 10}, {0, 10}};
+    point polygon1[] = {{0, 0}, {10, 0}, {10, 10}, {0, 10}};
     int n = sizeof(polygon1)/sizeof(polygon1[0]);
-    Point p = {20, 20};
+    point p = {20, 20};
     isInside(polygon1, n, p)? cout << "Yes \n": cout << "No \n";
  
     p.set(5, 5);
     isInside(polygon1, n, p)? cout << "Yes \n": cout << "No \n";
  
-    Point polygon2[]={{0, 0}, {5, 5}, {5, 0}};
+    point polygon2[]={{0, 0}, {5, 5}, {5, 0}};
     p.set(3, 3);
     n = sizeof(polygon2)/sizeof(polygon2[0]);
     isInside(polygon2, n, p)? cout << "Yes \n": cout << "No \n";
@@ -131,7 +131,7 @@ int main()
     p.set(8, 1);
     isInside(polygon2, n, p)? cout << "Yes \n": cout << "No \n";
  
-    Point polygon3[] =  {{0, 0}, {10, 0}, {10, 10}, {0, 10}};
+    point polygon3[] =  {{0, 0}, {10, 0}, {10, 10}, {0, 10}};
     p.set(-1,10);
     n = sizeof(polygon3)/sizeof(polygon3[0]);
     isInside(polygon3, n, p)? cout << "Yes \n": cout << "No \n";
