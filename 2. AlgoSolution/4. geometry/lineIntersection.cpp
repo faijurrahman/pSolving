@@ -4,9 +4,13 @@ using namespace std;
 
 struct point
 {
-    int x,y;
-	point(int a, int b){x=a;y=b;}
-	void setXY(int a, int b){x=a;y=b;}
+    public: 
+	double x,y;
+	point(){}
+	point(double a, double b){x=a;y=b;}
+	void setXY(double a, double b){x=a;y=b;}
+	double dist(point p){ return sqrt(pow(x-p.x,2)+pow(y-p.y,2));}
+	bool operator <(const point &p) const{ return x<p.x || (x==p.x && y<p.y);}
 };
  
 bool onSegment(point p, point q, point r)
