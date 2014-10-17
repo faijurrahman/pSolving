@@ -7,10 +7,8 @@ using namespace std;
 
 struct point
 {
-    public: 
-	double x,y;
-	point(){}
-	point(double a, double b){x=a;y=b;}
+    public: double x,y;	
+	point(double a, double b){x=a;y=b;} point(){}
 	void setXY(double a, double b){x=a;y=b;}
 	double dist(point p){ return sqrt(pow(x-p.x,2)+pow(y-p.y,2));}
 	bool operator <(const point &p) const{ return x<p.x || (x==p.x && y<p.y);}
