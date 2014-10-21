@@ -16,9 +16,13 @@ using namespace std;
 #define MAX(mVal, oVal) (mVal) = max((mVal),(oVal))
 #define MIN(mVal, oVal) (mVal) = min((mVal),(oVal))
 #define All(c) (c).begin(),(c).end()
-
+#define DEL(v,val) v.erase(remove(All(v),val),v.end())
 #define ZERO(arr) memset(arr,0,sizeof(arr))
 #define FILL(arr,val) memset(arr,val,sizeof(arr))
+
+#define PI 3.14159265358979
+#define INF 1e9
+#define DIFF 1e-9
 #define MOD 1000000007
 #define _N 100
 int dp[_N][_N];
