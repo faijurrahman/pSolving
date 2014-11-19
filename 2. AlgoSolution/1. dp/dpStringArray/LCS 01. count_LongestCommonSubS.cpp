@@ -16,15 +16,15 @@ int dp[MAX_LEN][MAX_LEN];
 class countLCS
 {
 public:
-	int subString(string S1, string S2)
+	int subStr(string S1, string S2)
 	{
-		int X=S1.length(), Y=S2.length();
-		int maxLen=0; ZERO(dp);
+		int X=S1.length(), Y=S2.length(); ZERO(dp);
+		int maxLen=0; 
 		LOOP(i,1,X+1) LOOP(j,1,Y+1) if(S1[i-1]==S2[j-1]) MAX(maxLen,(dp[i][j]=dp[i-1][j-1]+1));
 		return maxLen;
 	}
 
-	int subSequence(string S1, string S2)
+	int subSeq(string S1, string S2)
 	{
 		int X=S1.length(), Y=S2.length(); ZERO(dp);
 		LOOP(i,1,X+1) LOOP(j,1,Y+1)
@@ -37,16 +37,14 @@ public:
 // Driver program to test above function
 int main()
 {
-	countLCS lcs;
-	string input1, input2;
-	cout<<"Enter both strings separated by space: ";
-	while(cin>>input1>>input2)
+	countLCS cntLCS; string in1, in2;
+	cout<<"Enter both strings: ";
+	while(cin>>in1>>in2)
 	{
-		cout<<"Longest Common Substring: "<<lcs.subString(input1, input2)<<endl;
-		cout<<"Longest Common Subsequence: "<<lcs.subSequence(input1, input2)<<endl;
+		cout<<"LCString   Len: "<<cntLCS.subStr(in1,in2)<<endl;
+		cout<<"LCSequence Len: "<<cntLCS.subSeq(in1,in2)<<endl;
 
-		input1.empty();
-		input2.empty();
+		in1.empty(); in2.empty();
 		cout<<endl<<"Enter both strings separated by space: ";
 	}
 
