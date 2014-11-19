@@ -18,8 +18,7 @@ class countLCS
 public:
 	int subStr(string S1, string S2)
 	{
-		int X=S1.length(), Y=S2.length(); ZERO(dp);
-		int maxLen=0; 
+		int X=S1.length(), Y=S2.length(), maxLen=0; ZERO(dp);
 		LOOP(i,1,X+1) LOOP(j,1,Y+1) if(S1[i-1]==S2[j-1]) MAX(maxLen,(dp[i][j]=dp[i-1][j-1]+1));
 		return maxLen;
 	}
