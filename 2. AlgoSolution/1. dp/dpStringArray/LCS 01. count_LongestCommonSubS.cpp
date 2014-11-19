@@ -7,38 +7,29 @@ using namespace std;
 #define loop(i,n) for(int i=0;i<(n);i++)
 #define MAX(mVal, oVal) (mVal) = max((mVal),(oVal))
 #define MIN(mVal, oVal) (mVal) = min((mVal),(oVal))
+#define ZERO(arr) memset(arr,0,sizeof(arr))
+#define FILL(arr,val) memset(arr,val,sizeof(arr))
+
 #define MAX_LEN 100
 int dp[MAX_LEN][MAX_LEN];
-//bool dp[m+1][n+1];
 
 class countLCS
 {
 public:
 	int subString(string S1, string S2)
 	{
-		int X = S1.length();
-		int Y = S2.length();
-		int maxLen = 0;
-		loop(i,X+1) loop(j,Y+1)
-		{
-			if(i==0 || j==0) dp[i][j]=0;
-			else if(S1[i-1]==S2[j-1]) MAX(maxLen, (dp[i][j]=dp[i-1][j-1]+1));
-			else dp[i][j]=0;
-		}
+		int X=S1.length(), Y=S2.length();
+		int maxLen=0; ZERO(dp);
+		LOOP(i,1,X+1) LOOP(j,1,Y+1) if(S1[i-1]==S2[j-1]) MAX(maxLen,(dp[i][j]=dp[i-1][j-1]+1));
 		return maxLen;
 	}
 
 	int subSequence(string S1, string S2)
 	{
-		int X = S1.length();
-		int Y = S2.length();
-		loop(i,X+1) loop(j,Y+1)
-		{
-			if(i==0 || j==0) dp[i][j]=0;
-			else if(S1[i-1]==S2[j-1]) dp[i][j]=dp[i-1][j-1]+1; 
+		int X=S1.length(), Y=S2.length(); ZERO(dp);
+		LOOP(i,1,X+1) LOOP(j,1,Y+1)
+			if(S1[i-1]==S2[j-1]) dp[i][j]=dp[i-1][j-1]+1; 
 			else dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
-		}
-
 		return dp[X][Y];
 	}
 };
