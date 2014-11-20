@@ -19,16 +19,17 @@ public:
 	int subStr(string S1, string S2)
 	{
 		int X=S1.length(), Y=S2.length(), maxLen=0; ZERO(dp);
-		LOOP(i,1,X+1) LOOP(j,1,Y+1) if(S1[i-1]==S2[j-1]) MAX(maxLen,(dp[i][j]=dp[i-1][j-1]+1));
+		loop(i,X) loop(j,Y) 
+			if(S1[i]==S2[j]) MAX(maxLen,(dp[i+1][j+1]=dp[i][j]+1));
 		return maxLen;
 	}
 
 	int subSeq(string S1, string S2)
 	{
-		int X=S1.length(), Y=S2.length(); ZERO(dp);
-		LOOP(i,1,X+1) LOOP(j,1,Y+1)
-			if(S1[i-1]==S2[j-1]) dp[i][j]=dp[i-1][j-1]+1; 
-			else dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+		int X=S1.length(), Y=S2.length(); ZERO(dp); 
+		loop(i,X) loop(j,Y)
+			if(S1[i]==S2[j]) dp[i+1][j+1]=dp[i][j]+1; 
+			else dp[i+1][j+1] = max(dp[i][j+1],dp[i+1][j]);
 		return dp[X][Y];
 	}
 };
@@ -40,23 +41,23 @@ public:
 	{
 		int X=S1.length(), Y=S2.length(); ZERO(dp);
 		int endStr=0, maxLen=0; 
-		LOOP(i,1,X+1) LOOP(j,1,Y+1)
-			if(S1[i-1]==S2[j-1] && maxLen<(dp[i][j]=dp[i-1][j-1]+1)) 
-					endStr=i, maxLen=dp[i][j];
-		return S1.substr(endStr-maxLen,maxLen);
+		loop(i,X) loop(j,Y) 
+			if(S1[i]==S2[j] && maxLen<(dp[i+1][j+1]=dp[i][j]+1)) 
+					endStr=i, maxLen=dp[i+1][j+1];
+		return S1.substr(endStr+1-maxLen,maxLen);
 	}
 
 	string subSeq(string S1, string S2)
 	{
 		int X=S1.length(), Y=S2.length(); ZERO(dp);
-		LOOP(i,1,X+1) LOOP(j,1,Y+1)
-			if(S1[i-1]==S2[j-1]) dp[i][j]=dp[i-1][j-1]+1; 
-			else dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
+		loop(i,X) loop(j,Y)
+			if(S1[i]==S2[j]) dp[i+1][j+1]=dp[i][j]+1; 
+			else dp[i+1][j+1] = max(dp[i][j+1],dp[i+1][j]);
 
 		string tmp="", ans=""; 	
-		for(int i=X,j=Y; i>=0 && j>=0;)
+		for(int i=X-1,j=Y-1; i>=0 && j>=0;)
 			if(S1[i]==S2[j]){ tmp+=S1[i]; i--, j--;}
-			else if(dp[i][j]==dp[i-1][j]) i--;
+			else if(dp[i+1][j+1]==dp[i][j+1]) i--;
 			else j--;
 		for(int i=tmp.size()-1; i>=0; i--) ans+=tmp[i];
 		return ans;
@@ -67,14 +68,12 @@ public:
 int main()
 {
 	countLCS cntLCS; listLCS strLCS; string in1, in2;
-	cout<<"Enter both strings: ";
+	cout<<"Please enter both strings: ";
 	while(cin>>in1>>in2)
 	{
 		cout<<"LCString  : Len = "<<cntLCS.subStr(in1,in2)<<", Str = "<<strLCS.subStr(in1,in2)<<endl;
 		cout<<"LCSequence: Len = "<<cntLCS.subSeq(in1,in2)<<", Seq = "<<strLCS.subSeq(in1,in2)<<endl;
-
-		in1.empty(); in2.empty();
-		cout<<endl<<"Enter both strings separated by space: ";
+		in1.empty(); in2.empty(); cout<<endl<<"Please enter both strings again: ";
 	}
 
 	getchar();
