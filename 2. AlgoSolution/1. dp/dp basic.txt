@@ -1,5 +1,5 @@
 DP = carefull brute force
-DP = memorization + recursion + guessing
+DP = memoization + recursion + guessing
 DP = shortest path in a DAG (Directed Acyclic Graph)
 
 time of DP = time of subproblem * number of subprolem
