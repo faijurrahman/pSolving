@@ -8,15 +8,16 @@ using namespace std;
 #define loop(i,n) for(int i=0;i<(n);i++)
 #define All(c) (c).begin(),(c).end()
 
+
+#define pTYPE double
 struct point
 {
-    public: double x,y;	
-	point(double a, double b){x=a;y=b;} point(){}
-	void setPoint(double a, double b){x=a;y=b;}
-	double dist(point p){ return sqrt(pow(x-p.x,2)+pow(y-p.y,2));}
-	double dot(point A, point B){point OA(A.x-x,A.y-y), OB(B.x-x,B.y-y); return(OA.x*OB.x+OA.y*OB.y);}
-	double cross(point A, point B){point OA(A.x-x,A.y-y), OB(B.x-x,B.y-y); return(OA.x*OB.y - OA.y*OB.x);}
-	bool onSegment(point A, point B){bool ok=(x<=max(A.x,B.x) && x>=min(A.x,B.x) && y<=max(A.y,B.y) && y>=min(A.y,B.y)); return ok?1:0;}
+    public: pTYPE x,y;	
+	point(pTYPE a, pTYPE b){x=a;y=b;} point(){}
+	void setPoint(pTYPE a, pTYPE b){x=a;y=b;}
+	double dist(point p){ return sqrt(pow(x-p.x,2.0)+pow(y-p.y,2.0));}
+	pTYPE dot(point A, point B){point OA(A.x-x,A.y-y), OB(B.x-x,B.y-y); return(OA.x*OB.x+OA.y*OB.y);}
+	pTYPE cross(point A, point B){point OA(A.x-x,A.y-y), OB(B.x-x,B.y-y); return(OA.x*OB.y-OA.y*OB.x);}
 	bool operator <(const point &p) const{ return x<p.x || (x==p.x && y<p.y);}
 };
 
@@ -26,14 +27,14 @@ struct point
 //double a,b; //Equation: x/a + y/b = 1 => x/(C/A) + y/(C/B) = 1
 struct line
 {
-    public: double A,B,C; bool ok;
+    public: double A,B,C; bool doIntersect;
 	line(double A0, double B0, double C0){A=A0;B=B0;C=C0;} line(){}
 	line(point pa, point pb){setPoint(pa,pb);}
-	void setPoint(point pa, point pb){ A=pa.y-pb.y; B=pa.x-pb.x; C=A*pa.x+B*pa.y;}
+	void setPoint(point pa, point pb){ A=pa.y-pb.y; B=pb.x-pa.x; C=pb.x*pa.y-pb.y*pa.x;}
 	double dist(point pa){ return abs(A*pa.x+B*pa.y-C)/sqrt(A*A+B*B);}//Distance from a line to a point
 	line parallelLine(point pa){ return line(A,B,A*pa.x+B*pa.y);}//Parallel line goes through point pa
 	line perpendiculerLine(point pa){ return line(-B,A,-B*pa.x+A*pa.y);}//Perpendiculer line goes through point pa
-	point intersect(line L){double D=A*L.B-L.A*B;ok=D?false:true; return D?point((L.B*C-B*L.C)/D, (A*L.C-L.A*C)/D):point(0,0);}
+	point intersect(line L){double D=A*L.B-L.A*B;doIntersect=D?true:false; return D?point((L.B*C-B*L.C)/D, (A*L.C-L.A*C)/D):point(0,0);}
 };
 
 struct triangle
@@ -104,9 +105,7 @@ int main()
 	cout<<"Point related operations:"<<endl;
 	cout<<"Distance Between A and B = "<< points[0].dist(points[1])<<endl;
 	cout<<"Dot Product of points A,B,C = "<< points[0].dot(points[1],points[2])<<endl;
-	cout<<"Cross Product of points A,B,C = "<< points[0].cross(points[1],points[2])<<endl;
-	string str=points[0].onSegment(points[1],points[2])?"is ":"is not ";
-	cout<<"Point A "<<str<<"on the line segment BC"<<endl<<endl;
+	cout<<"Cross Product of points A,B,C = "<< points[0].cross(points[1],points[2])<<endl<<endl;
 
 	//**********************************************************************************
 	cout<<"Line related operations:"<<endl;
