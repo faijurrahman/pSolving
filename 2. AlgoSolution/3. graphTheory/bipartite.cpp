@@ -69,7 +69,7 @@ int main()
 						 };
 
 	int X = (int) sqrt(sizeof(bpGraph)/sizeof(bpGraph[0][0]));
-	vector<vector<bool>> Graph; Graph.resize(X);
+	vector<vector<int>> Graph; Graph.resize(X);
 	loop(i,X) loop(j,X) Graph[i].push_back( bpGraph[i][j] );
 
 	maxBPM objMaxBPM;
