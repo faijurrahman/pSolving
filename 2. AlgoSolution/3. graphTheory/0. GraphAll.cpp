@@ -101,8 +101,7 @@ private:
 
 int main()
 {
-	Graph graph; int X, ans;
-	vector<vector<int>> input;
+	Graph graph; int X, ans; vector<vector<int>> input; clock_t start=clock();
 
 	//*******************************************************************************
 	//             Shortest Distance
@@ -195,6 +194,6 @@ int main()
     cout<<endl<<"The maxBPM is "<<ans<<endl;
 
 
-	cout<<endl<<endl;
+	cout<<endl<<endl<<"Total Time ellapsed "<< 1000*(clock()-start)/(double) CLOCKS_PER_SEC<<" ms"<<endl<<endl;
 	return 0;
 }
