@@ -88,8 +88,10 @@ public:
 		return maxFlow; 
 	}
 
-private:
-	bool bpmRecur(int u){
+	private: void mcRecur(int src){ seen[src]=1; loop(i,X) if(G[src][i] && !seen[i]) mcRecur(i);} public:
+	void minCut(int src, int dst){ fordFulkerson(src,dst); seen.resize(0); seen.resize(X,0); mcRecur(src);}
+
+	private: bool bpmRecur(int u){
 		loop(v,Y) if(G[u][v] && !seen[v]){ seen[v]=1;
 			if(bpm[v]<0 || bpmRecur(bpm[v])){ bpm[v]=u; return 1;}}
 		return false;
@@ -102,6 +104,7 @@ private:
 
 	void print(void){ loop(i,X){ loop(j,X) if(G[i][j]==INF) cout<<setw(6)<<"INF"; else cout<<setw(6)<<G[i][j]; cout<<endl;}}
 	void printDist(void){ loop(i,X) cout<<setw(4)<<i<<"  --- "<<setw(3)<<dist[i]<<endl; cout<<endl;}
+	void printMinCut(void){ loop(i,X) loop(j,X) if(seen[i] && !seen[j] && G[i][j]) cout<<setw(3)<<i<<" --- "<<setw(3)<<j<<endl;}
 	void printBPM(void){ sort(All(bpm)); loop(i,X) if(bpm[i]!=-1) cout<<setw(4)<<bpm[i]<<"  --- "<<setw(3)<<i<<endl; cout<<endl;}
 };
 
@@ -159,6 +162,11 @@ int main()
 	graph.update(input); cout<<"Input Matrix:"<<endl; graph.print();
 	ans=graph.fordFulkerson(0,5); cout<<"Output Matrix:"<<endl; graph.print();
     cout<<endl<<"The maxFlow is "<<ans<<endl<<endl;
+
+	cout<<"**************************************************"<<endl;
+	cout<<"Minimum Cut"<<endl;
+	graph.update(input); graph.minCut(0,5); graph.update(input); 
+	cout<<endl<<"Edges to be cut: "<<endl; graph.printMinCut();cout<<endl;
 
 	cout<<"**************************************************"<<endl;
 	cout<<"Bipartite Matching"<<endl;
