@@ -30,7 +30,7 @@ class Graph
 private:
 	int X,Y,E; VVT G, adj;
 	vector<tuple<pTYPE,int,int>> edge;
-	vector<int> dist,path,match; vector<bool> seen;
+	vector<int> dist,path,bpm; vector<bool> seen;
 
 public:
 	
@@ -70,6 +70,13 @@ public:
 		while(!Q.empty()){ int du,u; auto it=Q.begin(); tie(du,u)=*it; Q.erase(it); seen[u]=1;
 		for(int v:adj[u]) if(!seen[v] && dist[v]>du+G[u][v]){ dist[v]=du+G[u][v]; Q.insert(make_tuple(dist[v],v));}}
 	}
+	
+	bool bellmanFord(int src){
+		bool nCycle=0; int u,v,w; Y=edge.size(); dist.clear(); dist.resize(X,INT_MAX); dist[src]=0; 
+		loop(i,X) loop(j,Y){ tie(w,u,v)=edge[j]; MIN(dist[v], dist[u]+w);}
+		loop(j,Y){ tie(w,u,v)=edge[j]; if(dist[v]>dist[u]+w) nCycle=1;}
+		return nCycle;
+	}
 
 	void floydWarshell(void){ loop(k,X) loop(i,X) loop(j,X) MIN(G[i][j], G[i][k]+G[k][j]);}
 
@@ -84,18 +91,18 @@ public:
 private:
 	bool bpmRecur(int u){
 		loop(v,Y) if(G[u][v] && !seen[v]){ seen[v]=1;
-			if(match[v]<0 || bpmRecur(match[v])){ match[v]=u; return 1;}}
+			if(bpm[v]<0 || bpmRecur(bpm[v])){ bpm[v]=u; return 1;}}
 		return false;
 	} public:
-	int maxBPM(void){ int bpm=0; X=G.size(); Y=G[0].size();
-		match.clear(); match.resize(Y,-1);
-		loop(u,X){ seen.clear(); seen.resize(Y,0); if(bpmRecur(u)) bpm++;}
-		return bpm;
+	int maxBPM(void){ int cnt=0; X=G.size(); Y=G[0].size(); bpm.clear(); bpm.resize(Y,-1);
+		loop(u,X){ seen.clear(); seen.resize(Y,0); if(bpmRecur(u)) cnt++;}
+		return cnt;
 	}
 
 
 	void print(void){ loop(i,X){ loop(j,X) if(G[i][j]==INF) cout<<setw(6)<<"INF"; else cout<<setw(6)<<G[i][j]; cout<<endl;}}
-	void printDist(void){printf("Vertex   Distance from Source\n"); loop(i,X) printf("%3d    %4d\n", i, dist[i]);}
+	void printDist(void){ loop(i,X) cout<<setw(4)<<i<<"  --- "<<setw(3)<<dist[i]<<endl; cout<<endl;}
+	void printBPM(void){ sort(All(bpm)); loop(i,X) if(bpm[i]!=-1) cout<<setw(4)<<bpm[i]<<"  --- "<<setw(3)<<i<<endl; cout<<endl;}
 };
 
 
@@ -103,9 +110,9 @@ int main()
 {
 	Graph graph; int X, ans; vector<vector<int>> input; clock_t start=clock();
 
-	//*******************************************************************************
-	//             Shortest Distance
-	//*******************************************************************************
+	cout<<"*****************************************************************"<<endl;
+	cout<<"                    Shortest Distance							"<<endl;
+	cout<<"*****************************************************************"<<endl;
 	int shortG[9][9] = {
 							{  0,	  4,	INF,	INF,	INF,	INF,	INF,	  8,	INF},
 							{  4,	  0,	  8,	INF,	INF,	INF,	INF,	 11,	INF},
@@ -117,42 +124,28 @@ int main()
 							{  8,	 11,	INF,	INF,	INF,	INF,	  1,	  0,	  7},
 							{INF,	INF,	  2,	INF,	INF,	INF,	  6,	  7,	  0}
 						};
-
-
-	
-	cout<<"**************************************************"<<endl;
-	cout<<"Dijkstra's shortest path algorithm"<<endl;
-
-
 	X=(int) sqrt(sizeof(shortG)/sizeof(shortG[0][0]));input.resize(0);input.resize(X);
-	loop(i,X) loop(j,X) input[i].push_back(shortG[i][j]);
+	loop(i,X) loop(j,X) input[i].push_back(shortG[i][j]); graph.update(input);
+	cout<<endl<<"Input Matrix:"<<endl; graph.print(); cout<<endl;
 
-	graph.update(input); 
-	cout<<endl<<"Input Matrix:"<<endl; graph.print();
-	graph.Dijkstra(0);
-	graph.printDist();
+	cout<<"**************************************************"<<endl;
+	cout<<"Dijkstra's shortest path algorithm"<<endl<<endl;	
+	graph.Dijkstra(0); cout<<"Vertex   Distance (from src)"<<endl; graph.printDist();
 
+	cout<<"**************************************************"<<endl;
+	cout<<"Bellman-Ford shortest path algorithm"<<endl<<endl;
+	graph.bellmanFord(0); cout<<"Vertex   Distance (from src)"<<endl;  graph.printDist();
 
-	cout<<endl<<endl<<"**************************************************"<<endl;
+	cout<<"**************************************************"<<endl;
 	cout<<"Floyd Warshell All pair shortest path algorithm"<<endl<<endl;
-
-
-	X=(int)sqrt(sizeof(shortG)/sizeof(shortG[0][0])); input.resize(0); input.resize(X);
-	loop(i,X) loop(j,X) input[i].push_back(shortG[i][j]);
-
-	graph.update(input); 
-	cout<<"Input Matrix:"<<endl; graph.print();
-	graph.floydWarshell();
-	cout<<"Output Matrix:"<<endl; graph.print();
+	graph.floydWarshell(); cout<<"Output Matrix:"<<endl; graph.print(); cout<<endl<<endl;
 
 
 
-	//*******************************************************************************
-	//             Max Flow, Min Cut, Bipartite
-	//*******************************************************************************
-
-	cout<<endl<<endl<<"**************************************************"<<endl;
-	cout<<"Ford Fulkerson Maximum flow"<<endl;
+	cout<<"*****************************************************************"<<endl;
+	cout<<"                 Max Flow, Min Cut, Bipartite					"<<endl;
+	cout<<"*****************************************************************"<<endl;
+	cout<<"Ford Fulkerson Maximum flow"<<endl<<endl;
     int G[6][6] = { 
 					{ 0, 16, 13,  0,  0,  0},
                     { 0,  0, 10, 12,  0,  0},
@@ -161,19 +154,13 @@ int main()
                     { 0,  0,  0,  7,  0,  4},
                     { 0,  0,  0,  0,  0,  0}
                   };
-
 	X=(int)sqrt(sizeof(G)/sizeof(G[0][0])); input.resize(0);input.resize(X);
 	loop(i,X) loop(j,X) input[i].push_back(G[i][j]);
+	graph.update(input); cout<<"Input Matrix:"<<endl; graph.print();
+	ans=graph.fordFulkerson(0,5); cout<<"Output Matrix:"<<endl; graph.print();
+    cout<<endl<<"The maxFlow is "<<ans<<endl<<endl;
 
-	graph.update(input); 
-	cout<<endl<<"Input Matrix:"<<endl; graph.print();
-	ans=graph.fordFulkerson(0,5);
-	cout<<"Output Matrix:"<<endl; graph.print();
-    cout<<endl<<"The maxFlow is "<<ans<<endl;
-
-
-
-	cout<<endl<<endl<<"**************************************************"<<endl;
+	cout<<"**************************************************"<<endl;
 	cout<<"Bipartite Matching"<<endl;
 	int bpG[6][6] = {  
 						{0, 1, 1, 0, 0, 0},
@@ -183,15 +170,11 @@ int main()
 						{0, 0, 0, 0, 0, 0},
 						{0, 0, 0, 0, 0, 1}
 					};
-
 	X=(int) sqrt(sizeof(bpG)/sizeof(bpG[0][0])); input.resize(0);input.resize(X);
 	loop(i,X) loop(j,X) input[i].push_back( G[i][j] );
-	
-	graph.update(input); 
-	cout<<endl<<"Input Matrix:"<<endl; graph.print();
-	ans=graph.maxBPM();
-	cout<<"Output Matrix:"<<endl; graph.print();
-    cout<<endl<<"The maxBPM is "<<ans<<endl;
+	graph.update(input); cout<<endl<<"Input Matrix:"<<endl; graph.print();
+	ans=graph.maxBPM(); cout<<endl<<"BPM Matching:"<<endl; graph.printBPM();
+    cout<<"The maxBPM is "<<ans<<endl<<endl;
 
 
 	cout<<endl<<endl<<"Total Time ellapsed "<< 1000*(clock()-start)/(double) CLOCKS_PER_SEC<<" ms"<<endl<<endl;
