@@ -16,6 +16,36 @@ using namespace std;
 #define DIMX 8
 #define DIMY DIMX
 
+/*
+
+
+ class chessBoard
+{
+public:
+	int X, Y; 
+	vector<pair<int,int>> moveXY;	
+	vector<vector<int>> board;	
+
+	chessBoard(void){chessBoard(8,8);}
+	chessBoard(int dimX, int dimY)
+	{
+		X=dimX, Y=dimY; board.resize(X); loop(i,Y) board[i].resize(Y,0);
+		int mX[8]={1,1,-1,-1,2,2,-2,-2}, mY[8]={2,-2,2,-2,1,-1,1,-1};
+		loop(i,8){ moveXY.push_back(make_pair(mX[i],mY[i])); }
+	}
+
+	pair<int,int> nextMove(pair<int,int> curPos, int moveNo)
+	{ if(moveNo<8){ return make_pair(curPos.first+moveXY[moveNo].first,curPos.second+moveXY[moveNo].second); }}
+
+	bool isLimit(pair<int,int> move){return isLimit(move.first,move.second);}
+	bool isLimit(int x, int y){if((0<=x && x<X) && (0<=y && y<Y)) return true; return false;}
+
+	void clearChessBoard(){loop(i,X) loop(j,Y) board[i][j]=0;}
+	void printChessBoard(){loop(i,X){loop(j,Y) cout<<setw(2)<<board[i][j]<<" "; cout<<endl;}}
+};
+
+*/
+
 class chessBoard
 {
 private:
