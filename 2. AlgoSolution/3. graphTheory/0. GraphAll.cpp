@@ -48,31 +48,28 @@ public:
 		//loop(i,N){ G[U[i]][V[i]]=G[V[i]][U[i]]=W[i]; adj[U[i]].push_back(V[i]); adj[V[i]].push_back(U[i]); edge.push_back(make_tuple(W[i],U[i],V[i]));}
 	}
 
-	bool dfs(int src, int dst){
-		seen.clear(); seen.resize(X,0); path.clear(); path.resize(X);
-		stack<int> q; q.push(src); seen[src]=1;
+	bool dfs(int src, int dst){ path.clear(); path.resize(X);
+		stack<int> q; q.push(src); seen.clear(); seen.resize(X,0); seen[src]=1;
 		while(!q.empty()){ int u=q.top(); q.pop();
 			loop(v,X) if(!seen[v] && G[u][v]>0){ q.push(v); seen[v]=1; path[v]=u; if(seen[dst]) return 1;}} 
 		return false;
 	}
 		
-	bool bfs(int src, int dst){
-		seen.clear(); seen.resize(X,0); path.clear(); path.resize(X);
-		queue<int> q; q.push(src); seen[src]=1; 
+	bool bfs(int src, int dst){ path.clear(); path.resize(X);
+		queue<int> q; q.push(src); seen.clear(); seen.resize(X,0); seen[src]=1; 
 		while(!q.empty()){ int u=q.front(); q.pop();
 			loop(v,X) if(!seen[v] && G[u][v]>0){ q.push(v); seen[v]=1; path[v]=u; if(seen[dst]) return 1;}} 
 		return false;
 	}
 
-	void Dijkstra(int src){
-		set<tuple<int,int>> Q; Q.insert(make_tuple(0,src)); seen.clear(); 
+	void Dijkstra(int src){ set<tuple<int,int>> Q; Q.insert(make_tuple(0,src)); seen.clear(); 
 		seen.resize(X,0); dist.clear(); dist.resize(X,INT_MAX); dist[src]=0;
 		while(!Q.empty()){ int du,u; auto it=Q.begin(); tie(du,u)=*it; Q.erase(it); seen[u]=1;
 		for(int v:adj[u]) if(!seen[v] && dist[v]>du+G[u][v]){ dist[v]=du+G[u][v]; Q.insert(make_tuple(dist[v],v));}}
 	}
 	
-	bool bellmanFord(int src){
-		bool nCycle=0; int u,v,w; Y=edge.size(); dist.clear(); dist.resize(X,INT_MAX); dist[src]=0; 
+	bool bellmanFord(int src){ bool nCycle=0; int u,v,w; 
+		Y=edge.size(); dist.clear(); dist.resize(X,INT_MAX); dist[src]=0; 
 		loop(i,X) loop(j,Y){ tie(w,u,v)=edge[j]; MIN(dist[v], dist[u]+w);}
 		loop(j,Y){ tie(w,u,v)=edge[j]; if(dist[v]>dist[u]+w) nCycle=1;}
 		return nCycle;
@@ -91,8 +88,7 @@ public:
 	private: void mcRecur(int src){ seen[src]=1; loop(i,X) if(G[src][i] && !seen[i]) mcRecur(i);} public:
 	void minCut(int src, int dst){ fordFulkerson(src,dst); seen.resize(0); seen.resize(X,0); mcRecur(src);}
 
-	private: bool bpmRecur(int u){
-		loop(v,Y) if(G[u][v] && !seen[v]){ seen[v]=1;
+	private: bool bpmRecur(int u){ loop(v,Y) if(G[u][v] && !seen[v]){ seen[v]=1;
 			if(bpm[v]<0 || bpmRecur(bpm[v])){ bpm[v]=u; return 1;}}
 		return false;
 	} public:
