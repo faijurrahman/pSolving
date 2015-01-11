@@ -64,6 +64,13 @@ public:
 		return false;
 	}
 
+	void Dijkstra(int src){
+		set<tuple<int,int>> Q; Q.insert(make_tuple(0,src)); seen.clear(); 
+		seen.resize(X,0); dist.clear(); dist.resize(X,INT_MAX); dist[src]=0;
+		while(!Q.empty()){ int du,u; auto it=Q.begin(); tie(du,u)=*it; Q.erase(it); seen[u]=1;
+		for(int v:adj[u]) if(!seen[v] && dist[v]>du+G[u][v]){ dist[v]=du+G[u][v]; Q.insert(make_tuple(dist[v],v));}}
+	}
+
 	void floydWarshell(void){ loop(k,X) loop(i,X) loop(j,X) MIN(G[i][j], G[i][k]+G[k][j]);}
 
 	int fordFulkerson(int src, int dst) { int maxFlow=0; 
@@ -88,6 +95,7 @@ private:
 
 
 	void print(void){ loop(i,X){ loop(j,X) if(G[i][j]==INF) cout<<setw(6)<<"INF"; else cout<<setw(6)<<G[i][j]; cout<<endl;}}
+	void printDist(void){printf("Vertex   Distance from Source\n"); loop(i,X) printf("%3d    %4d\n", i, dist[i]);}
 };
 
 
@@ -96,34 +104,53 @@ int main()
 	Graph graph; int X, ans;
 	vector<vector<int>> input;
 
+	//*******************************************************************************
+	//             Shortest Distance
+	//*******************************************************************************
+	int shortG[9][9] = {
+							{  0,	  4,	INF,	INF,	INF,	INF,	INF,	  8,	INF},
+							{  4,	  0,	  8,	INF,	INF,	INF,	INF,	 11,	INF},
+							{INF,	  8,	  0,	  7,	INF,	  4,	INF,	INF,	  2},
+							{INF,	INF,	  7,	  0,	  9,	 14,	INF,	INF,	INF},
+							{INF,	INF,	INF,	  9,	  0,	 10,	INF,	INF,	INF},
+							{INF,	INF,	  4,	INF,	 10,	  0,	  2,	INF,	INF},
+							{INF,	INF,	INF,	 14,    INF,	  2,	  0,	  1,	  6},
+							{  8,	 11,	INF,	INF,	INF,	INF,	  1,	  0,	  7},
+							{INF,	INF,	  2,	INF,	INF,	INF,	  6,	  7,	  0}
+						};
 
-	cout<<"**************************************************"<<endl;
-	cout<<"Floyd Warshell All pair shortest path algorithm"<<endl<<endl;
-	/* 
-	10
-	(0)------->(3)
-	|         /|\
-	5 |          |
-	|          | 1
-	\|/         |
-	(1)------->(2)
-	3           
-	*/
-	int gr[5][5] = {    {0,   5,  INF, 10},
-						{INF, 0,   3, INF},
-						{INF, INF, 0,   1},
-						{INF, INF, INF, 0}
-				   };
 
 	
-	X=(int)sqrt(sizeof(gr)/sizeof(gr[0][0])); X--; input.resize(0); input.resize(X);
-	loop(i,X) loop(j,X) input[i].push_back(gr[i][j]);
+	cout<<"**************************************************"<<endl;
+	cout<<"Dijkstra's shortest path algorithm"<<endl;
+
+
+	X=(int) sqrt(sizeof(shortG)/sizeof(shortG[0][0]));input.resize(0);input.resize(X);
+	loop(i,X) loop(j,X) input[i].push_back(shortG[i][j]);
+
+	graph.update(input); 
+	cout<<endl<<"Input Matrix:"<<endl; graph.print();
+	graph.Dijkstra(0);
+	graph.printDist();
+
+
+	cout<<endl<<endl<<"**************************************************"<<endl;
+	cout<<"Floyd Warshell All pair shortest path algorithm"<<endl<<endl;
+
+
+	X=(int)sqrt(sizeof(shortG)/sizeof(shortG[0][0])); input.resize(0); input.resize(X);
+	loop(i,X) loop(j,X) input[i].push_back(shortG[i][j]);
 
 	graph.update(input); 
 	cout<<"Input Matrix:"<<endl; graph.print();
 	graph.floydWarshell();
 	cout<<"Output Matrix:"<<endl; graph.print();
 
+
+
+	//*******************************************************************************
+	//             Max Flow, Min Cut, Bipartite
+	//*******************************************************************************
 
 	cout<<endl<<endl<<"**************************************************"<<endl;
 	cout<<"Ford Fulkerson Maximum flow"<<endl;
@@ -146,16 +173,17 @@ int main()
     cout<<endl<<"The maxFlow is "<<ans<<endl;
 
 
+
 	cout<<endl<<endl<<"**************************************************"<<endl;
 	cout<<"Bipartite Matching"<<endl;
 	int bpG[6][6] = {  
-				{0, 1, 1, 0, 0, 0},
-				{1, 0, 0, 1, 0, 0},
-				{0, 0, 1, 0, 0, 0},
-				{0, 0, 1, 1, 0, 0},
-				{0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 1}
-			  };
+						{0, 1, 1, 0, 0, 0},
+						{1, 0, 0, 1, 0, 0},
+						{0, 0, 1, 0, 0, 0},
+						{0, 0, 1, 1, 0, 0},
+						{0, 0, 0, 0, 0, 0},
+						{0, 0, 0, 0, 0, 1}
+					};
 
 	X=(int) sqrt(sizeof(bpG)/sizeof(bpG[0][0])); input.resize(0);input.resize(X);
 	loop(i,X) loop(j,X) input[i].push_back( G[i][j] );
