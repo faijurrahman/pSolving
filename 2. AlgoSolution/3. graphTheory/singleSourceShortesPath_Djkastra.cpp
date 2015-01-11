@@ -1,7 +1,9 @@
 //http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
 #include <stdio.h>
 #include <climits>
+#include <time.h>
 #include <algorithm>
+#include<iostream>
 #include <vector>
 using namespace std;
 
@@ -9,6 +11,8 @@ using namespace std;
 #define MAX(mVal, oVal) (mVal) = max((mVal),(oVal))
 #define MIN(mVal, oVal) (mVal) = min((mVal),(oVal))
 #define V 9
+#define INF 999999
+
 class dijkstra
 {
 private:
@@ -52,16 +56,16 @@ public:
 
 int main()
 {
-	int G[V][V] = {
-					{0,	4,	0,	0,	0,	0,	0,	8,	0},
-					{4,	0,	8,	0,	0,	0,	0,	11,	0},
-					{0,	8,	0,	7,	0,	4,	0,	0,	2},
-					{0,	0,	7,	0,	9,	14,	0,	0,	0},
-					{0,	0,	0,	9,	0,	10,	0,	0,	0},
-					{0,	0,	4,	0,	10,	0,	2,	0,	0},
-					{0,	0,	0,	14, 0,	2,	0,	1,	6},
-					{8,	11,	0,	0,	0,	0,	1,	0,	7},
-					{0,	0,	2,	0,	0,	0,	6,	7,	0}
+	int G[9][9] = {
+						{  0,	  4,	INF,	INF,	INF,	INF,	INF,	  8,	INF},
+						{  4,	  0,	  8,	INF,	INF,	INF,	INF,	 11,	INF},
+						{INF,	  8,	  0,	  7,	INF,	  4,	INF,	INF,	  2},
+						{INF,	INF,	  7,	  0,	  9,	 14,	INF,	INF,	INF},
+						{INF,	INF,	INF,	  9,	  0,	 10,	INF,	INF,	INF},
+						{INF,	INF,	  4,	INF,	 10,	  0,	  2,	INF,	INF},
+						{INF,	INF,	INF,	 14,    INF,	  2,	  0,	  1,	  6},
+						{  8,	 11,	INF,	INF,	INF,	INF,	  1,	  0,	  7},
+						{INF,	INF,	  2,	INF,	INF,	INF,	  6,	  7,	  0}
 				  };
 
 	clock_t start, finish;
@@ -73,8 +77,8 @@ int main()
 	dijkstra objDijkastra;
 	objDijkastra.calculateSolutin(graph, 0);
 	  finish = clock();
-    cout << "Time for sort (seconds): "
-         << ((double)(finish - start))/CLOCKS_PER_SEC <<endl;
+    std::cout << "Time for sort (miliseconds): "
+         << ((double)(finish - start)) <<endl;
 
 	return 0;
 }
