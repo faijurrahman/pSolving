@@ -1,0 +1,16 @@
+Running Task:
+
+
+Pending Task:
+
+
+
+Every Day Task:
+- Morning: One SRM601-625 Div2(1,2,3) and Div1(1)
+- Night: One CF ROUND#251-275 Div2(A,B,C,D,E)
+
+Weekly Task:
+- Upsolving: All SRM and CF round of last week
+- Reviweing all solved SRM and CF round as every day task
+
+
