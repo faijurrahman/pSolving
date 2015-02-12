@@ -1,8 +1,21 @@
-#include<string>
 #include<set>
+#include<climits>
 #include<algorithm>
+#include<vector>
+#include<string>
+#include<cstring>
 #include<iostream>
+#include <sstream>
 using namespace std;
+
+#define LOOP(i,s,n) for(int i=(s);i<(n);i++)
+#define loop(i,n) for(int i=0;i<(n);i++)
+#define MAX(mVal, oVal) (mVal) = max((mVal),(oVal))
+#define MIN(mVal, oVal) (mVal) = min((mVal),(oVal))
+#define All(c) (c).begin(),(c).end()
+
+#define ZERO(arr) memset(arr,0,sizeof(arr))
+#define FILL(arr,val) memset(arr,val,sizeof(arr))
 
 int r;
 string inputStr;
@@ -36,6 +49,19 @@ void permComb(string str)
 		}
 }
 
+string str;
+void permut(int i)
+{
+	static int cnt=0;
+	if(i==str.size()-1){cout<<(++cnt)<<". "<<str<<endl; return;}
+	LOOP(j,i,str.size())
+	{
+		if(i!=j) str[i]^=str[j]^=str[i]^=str[j];
+		permut(i+1);
+		if(i!=j) str[i]^=str[j]^=str[i]^=str[j];
+	}
+}
+
 int main()
 {
 	int nPr, nCr;
@@ -65,6 +91,9 @@ int main()
 			cout<<"Error: value of r is greater than n."<<endl;
 		}
 
+		cout<<endl<<"All permutations"<<endl;
+		str=inputStr;
+		permut(0);
 		cout<<endl<<"Press Ctrl+Z+Enter to exit. \nEnter string again: ";
 	}
 } 

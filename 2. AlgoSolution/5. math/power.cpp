@@ -4,30 +4,42 @@
 #include<string>
 #include<iostream>
 using namespace std;
+#define MOD 1000000007
+
+/* this function calculates (a*b)%MOD taking into account that a*b might overflow */
+long long mulmod(long long a,long long b)
+{
+    long long ret=0,base=a%MOD;
+    while(b>0)
+	{
+        if(b%2==1) ret=(ret+base)%MOD;
+        base=(base*2)%MOD;
+        b/=2;
+    }
+    return ret%MOD;
+}
 
 // Find x raised to the y-th power modulo MOD in log  
-long long modPow(long long base, int pow)
+long long modPow(long long base, int power)
 {
     long long ans=1;
-    while(pow>0) 
+    while(power>0) 
 	{
-        if(pow&1) ans=(ans*base)%MOD;
+        if(power&1) ans=(ans*base)%MOD;
         base=(base*base)%MOD;
-        pow/=2;
+        power/=2;
     }
     return ans;
 }
 
-class stadardMul
-{
-public:
-	long long power(int base, int exp) 
-	{ 
-		long long result=1; 
-		for(int i=0; i<exp; i++) result*=base; 
-		return result;
-	}
-};
+
+long long power(int base, int exp) 
+{ 
+	long long result=1; 
+	for(int i=0; i<exp; i++) result*=base; 
+	return result;
+}
+
 
 class divAndConquer
 {
@@ -78,15 +90,14 @@ public:
 
 int main()
 {
-	stadardMul cal1; 
 	divAndConquer cal2;
 
 	int base, n;
 	cout<<"Enter Your Number: ";
 	cin >> base >> n;
 
-	cout<<"Value1:"<< cal1.power(base,n) <<endl;
-	cout<<"Value2:"<< cal2.power(base,n) <<endl;
-	cout<<"Value3:"<< cal2.power2(base,n) <<endl;
+	cout<<"Value1:"<< power(base,n) <<endl;
+	cout<<"Value2:"<< cal2.power(base,n)%MOD <<endl;
+	cout<<"Value3:"<< modPow(base,n) <<endl;
 } 
 
