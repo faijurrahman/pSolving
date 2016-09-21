@@ -1,0 +1,1 @@
+Let's change git message with --amend
